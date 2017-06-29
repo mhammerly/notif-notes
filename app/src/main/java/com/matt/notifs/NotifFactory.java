@@ -36,7 +36,7 @@ public class NotifFactory {
             .setSmallIcon(android.R.color.transparent)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
-            .setStyle(new NotificationCompat.BigTextStyle().bigText(""))
+            .setStyle(new NotificationCompat.BigTextStyle())
             .addAction(replyAction)
             .build();
     }
