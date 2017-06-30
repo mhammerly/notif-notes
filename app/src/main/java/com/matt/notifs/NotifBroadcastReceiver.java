@@ -24,12 +24,12 @@ public class NotifBroadcastReceiver extends BroadcastReceiver {
             // Reset the input notification to accept more text
             notificationManager.notify(Constants.INPUT_NOTIF_ID, NotifFactory.CreateInputNotif(context));
 
-            // Save this notification and display it
+            // Save this notification and display it.
             SharedPreferences prefs = context.getSharedPreferences(Constants.PREFS_NAME, 0);
             SharedPreferences.Editor editor = prefs.edit();
             int latestNotif = prefs.getInt(Constants.PREFS_LATEST_NOTIF, 1);
             notificationManager.notify(latestNotif + 1, NotifFactory.CreateReminderNotif(context, message));
-            editor.putString(Integer.toString(latestNotif + 1), message.toString());
+            editor.putString(Constants.PREFS_NOTIF_PREFIX + Integer.toString(latestNotif + 1), message.toString());
             editor.putInt(Constants.PREFS_LATEST_NOTIF, latestNotif + 1);
             editor.commit();
         }
