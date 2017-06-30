@@ -42,11 +42,18 @@ public class NotifFactory {
             .build();
     }
 
-    public static Notification CreateReminderNotif(Context context, CharSequence message) {
+    public static Notification CreateReminderNotif(Context context, int notifId, CharSequence message) {
+        Intent intent = new Intent(context, NotifBroadcastReceiver.class);
+        intent.setAction(Constants.DISMISS_ACTION);
+        intent.putExtra(Constants.KEY_NOTIF_ID, notifId);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent,
+                                            PendingIntent.FLAG_UPDATE_CURRENT);
+
         return new NotificationCompat.Builder(context)
             .setContentTitle("Reminder")
             .setContentText(message)
             .setSmallIcon(android.R.color.white)
+            .setDeleteIntent(pendingIntent)
             .build();
     }
 }

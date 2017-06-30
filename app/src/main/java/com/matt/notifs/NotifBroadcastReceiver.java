@@ -17,6 +17,9 @@ import com.matt.notifs.NotifFactory;
 public class NotifBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        SharedPreferences prefs = context.getSharedPreferences(Constants.PREFS_NAME, 0);
+        SharedPreferences.Editor editor = prefs.edit();
+
         if (intent.getAction().equals(Constants.REPLY_ACTION)) {
             CharSequence message = getReplyMessage(intent);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -25,12 +28,15 @@ public class NotifBroadcastReceiver extends BroadcastReceiver {
             notificationManager.notify(Constants.INPUT_NOTIF_ID, NotifFactory.CreateInputNotif(context));
 
             // Save this notification and display it.
-            SharedPreferences prefs = context.getSharedPreferences(Constants.PREFS_NAME, 0);
-            SharedPreferences.Editor editor = prefs.edit();
             int latestNotif = prefs.getInt(Constants.PREFS_LATEST_NOTIF, 1);
-            notificationManager.notify(latestNotif + 1, NotifFactory.CreateReminderNotif(context, message));
-            editor.putString(Constants.PREFS_NOTIF_PREFIX + Integer.toString(latestNotif + 1), message.toString());
-            editor.putInt(Constants.PREFS_LATEST_NOTIF, latestNotif + 1);
+            int newNotif = latestNotif + 1;
+            notificationManager.notify(newNotif, NotifFactory.CreateReminderNotif(context, newNotif, message));
+            editor.putString(Constants.PREFS_NOTIF_PREFIX + Integer.toString(newNotif), message.toString());
+            editor.putInt(Constants.PREFS_LATEST_NOTIF, newNotif);
+            editor.commit();
+        } else if (intent.getAction().equals(Constants.DISMISS_ACTION)) {
+            int notifId = intent.getExtras().getInt(Constants.KEY_NOTIF_ID);
+            editor.remove(Constants.PREFS_NOTIF_PREFIX + Integer.toString(notifId));
             editor.commit();
         }
     }

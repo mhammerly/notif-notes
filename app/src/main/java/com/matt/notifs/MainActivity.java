@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
                         notifId,
                         NotifFactory.CreateReminderNotif(
                             getApplicationContext(),
+                            notifId,
                             (CharSequence) pref.getValue()));
                 } catch (Exception e) { }
             }
