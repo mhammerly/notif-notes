@@ -8,20 +8,21 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
 
+import com.matt.notifs.Constants;
 import com.matt.notifs.R;
 import com.matt.notifs.NotifBroadcastReceiver;
 
 public class NotifFactory {
 
     public static Notification CreateInputNotif(Context context) {
-        RemoteInput remoteInput = new RemoteInput.Builder("reply")
+        RemoteInput remoteInput = new RemoteInput.Builder(Constants.KEY_REPLY)
             .setLabel("Enter some shit to remember")
             .build();
 
         Intent intent = new Intent(context, NotifBroadcastReceiver.class);
-        intent.setAction("com.example.android.messagingservice.ACTION_MESSAGE_REPLY");
-        intent.putExtra("notification_id", 1);
-        intent.putExtra("message_id", 1);
+        intent.setAction(Constants.REPLY_ACTION);
+        intent.putExtra(Constants.KEY_NOTIF_ID, 1);
+        intent.putExtra(Constants.KEY_MESSAGE_ID, 1);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent,
                                             PendingIntent.FLAG_UPDATE_CURRENT);
 
