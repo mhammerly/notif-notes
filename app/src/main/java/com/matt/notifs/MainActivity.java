@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.matt.notifs.Constants;
 import com.matt.notifs.R;
@@ -27,16 +28,27 @@ public class MainActivity extends Activity {
 
         for (Map.Entry<String, ?> pref : allPrefs.entrySet()) {
             if (pref.getKey().startsWith(Constants.PREFS_NOTIF_PREFIX)) {
+                String notifKey = pref.getKey().substring(Constants.PREFS_NOTIF_PREFIX.length());
+                Log.i(Constants.LOG_TAG,
+                    "Found saved notif on startup " +
+                    "{key: " + notifKey +
+                    ", value: " + pref.getValue() +
+                    "}");
                 try {
-                    int notifId = Integer.parseInt(
-                            pref.getKey().substring(Constants.PREFS_NOTIF_PREFIX.length()));
+                    int notifId = Integer.parseInt(notifKey);
                     notifMgr.notify(
                         notifId,
                         NotifFactory.CreateReminderNotif(
                             getApplicationContext(),
                             notifId,
                             (CharSequence) pref.getValue()));
-                } catch (Exception e) { }
+                } catch (Exception e) {
+                    Log.e(Constants.LOG_TAG,
+                        "Failed to create notif " +
+                        "{key: " + notifKey +
+                        ", value: '" + pref.getValue() +
+                        "'}: " + e.getMessage());
+                }
             }
         }
     }

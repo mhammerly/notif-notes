@@ -13,4 +13,6 @@ public class Constants {
     public static final String PREFS_NAME = "NotifPrefs";
     public static final String PREFS_NOTIF_PREFIX = "notif_";
     public static final String PREFS_LATEST_NOTIF = "latest_notif";
+
+    public static final String LOG_TAG = "notifs";
 }

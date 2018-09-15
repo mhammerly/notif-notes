@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
+import android.util.Log;
 
 import com.matt.notifs.Constants;
 import com.matt.notifs.R;
@@ -29,15 +30,19 @@ public class NotifBroadcastReceiver extends BroadcastReceiver {
 
             // Save this notification and display it.
             int latestNotif = prefs.getInt(Constants.PREFS_LATEST_NOTIF, 1);
-            int newNotif = latestNotif + 1;
-            notificationManager.notify(newNotif, NotifFactory.CreateReminderNotif(context, newNotif, message));
-            editor.putString(Constants.PREFS_NOTIF_PREFIX + Integer.toString(newNotif), message.toString());
-            editor.putInt(Constants.PREFS_LATEST_NOTIF, newNotif);
+            int notifId = latestNotif + 1;
+            String notifKey = Integer.toString(notifId);
+            notificationManager.notify(notifId, NotifFactory.CreateReminderNotif(context, notifId, message));
+            editor.putString(Constants.PREFS_NOTIF_PREFIX + notifKey, message.toString());
+            editor.putInt(Constants.PREFS_LATEST_NOTIF, notifId);
             editor.commit();
+            Log.i(Constants.LOG_TAG, "Created notif {key: " + notifKey + ", value: " + message.toString() + "}");
         } else if (intent.getAction().equals(Constants.DISMISS_ACTION)) {
             int notifId = intent.getExtras().getInt(Constants.KEY_NOTIF_ID);
-            editor.remove(Constants.PREFS_NOTIF_PREFIX + Integer.toString(notifId));
+            String notifKey = Integer.toString(notifId);
+            editor.remove(Constants.PREFS_NOTIF_PREFIX + notifKey);
             editor.commit();
+            Log.i(Constants.LOG_TAG, "Dismissed notif {key: " + notifKey + "}");
         }
     }
 
