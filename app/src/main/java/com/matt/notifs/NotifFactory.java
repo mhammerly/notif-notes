@@ -22,7 +22,6 @@ public class NotifFactory {
         Intent intent = new Intent(context, NotifBroadcastReceiver.class);
         intent.setAction(Constants.REPLY_ACTION);
         intent.putExtra(Constants.KEY_NOTIF_ID, 1);
-        intent.putExtra(Constants.KEY_MESSAGE_ID, 1);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent,
                                             PendingIntent.FLAG_UPDATE_CURRENT);
 
