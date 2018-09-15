@@ -21,8 +21,8 @@ public class NotifFactory {
 
         Intent intent = new Intent(context, NotifBroadcastReceiver.class);
         intent.setAction(Constants.REPLY_ACTION);
-        intent.putExtra(Constants.KEY_NOTIF_ID, 1);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent,
+        intent.putExtra(Constants.KEY_NOTIF_ID, Constants.INPUT_NOTIF_ID);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Constants.INPUT_NOTIF_ID, intent,
                                             PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
@@ -45,8 +45,8 @@ public class NotifFactory {
         Intent intent = new Intent(context, NotifBroadcastReceiver.class);
         intent.setAction(Constants.DISMISS_ACTION);
         intent.putExtra(Constants.KEY_NOTIF_ID, notifId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent,
-                                            PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notifId, intent,
+                                            PendingIntent.FLAG_IMMUTABLE);
 
         return new NotificationCompat.Builder(context)
             .setContentTitle("Reminder")
