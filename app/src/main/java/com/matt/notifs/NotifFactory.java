@@ -51,7 +51,7 @@ public class NotifFactory {
         return new NotificationCompat.Builder(context)
             .setContentTitle("Reminder")
             .setContentText(message)
-            .setSmallIcon(android.R.color.white)
+            .setSmallIcon(R.drawable.noun_notification_619387)
             .setDeleteIntent(pendingIntent)
             .build();
     }

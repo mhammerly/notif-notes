@@ -9,16 +9,18 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
+    <!-- icon: notification by Sean Maldjian from the Noun Project -->
+    <!-- https://thenounproject.com/term/notification/619387/ -->
     <application
         android:name=".Notifs"
         android:label="Notifs"
-        android:icon="@android:drawable/ic_menu_save"
+        android:icon="@drawable/noun_notification_619387"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.MainActivity"
-            android:label="Main Activity"
+            android:label="Notifs"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
