@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,15 +26,16 @@ public class ForegroundViewManager implements MemoManager.MemoListener {
         mMemoMgr = memoMgr;
         mMemoMgr.registerListener(this);
 
-        List<MemoManager.Memo> memos = mMemoMgr.getMemos();
-        Log.i(Constants.LOG_TAG, "Creating foreground view with " + memos.size() + " cached memos");
+        Log.i(Constants.LOG_TAG, "Creating foreground view with " + mMemoMgr.getMemos().size() + " cached memos");
 
         Activity activity = (Activity) mContext;
 
         mRecyclerView = activity.findViewById(R.id.notif_recycler_view);
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MemoAdapter(memos);
+        mAdapter = new MemoAdapter(mMemoMgr);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeGestureCallback(mAdapter));
+        touchHelper.attachToRecyclerView(mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
         mNotifInput = activity.findViewById(R.id.notif_input);
@@ -63,7 +65,6 @@ public class ForegroundViewManager implements MemoManager.MemoListener {
     // Call after memoMgr.refresh()
     public void refresh() {
         Log.i(Constants.LOG_TAG, "Refreshing ForegroundViewManager");
-        mAdapter.setData(mMemoMgr.getMemos());
         mRecyclerView.setAdapter(mAdapter);
     }
 }
