@@ -33,7 +33,7 @@ public class ForegroundViewManager implements MemoManager.MemoListener {
         mRecyclerView = activity.findViewById(R.id.notif_recycler_view);
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MemoAdapter(memos, mContext);
+        mAdapter = new MemoAdapter(memos);
         mRecyclerView.setAdapter(mAdapter);
 
         mNotifInput = activity.findViewById(R.id.notif_input);

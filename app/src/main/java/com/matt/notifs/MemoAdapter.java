@@ -1,47 +1,38 @@
 package com.matt.notifs;
 
-import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder> {
     private List<MemoManager.Memo> mData;
-    private Context mContext;
 
     public static class MemoViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout mLayout;
+        private View mView;
         public TextView mText;
         public TextView mId;
 
-        public MemoViewHolder(LinearLayout layout) {
-            super(layout);
-            mLayout = layout;
-            mText = (TextView) layout.getChildAt(0);
-            mId = (TextView) layout.getChildAt(1);
+        public MemoViewHolder(View view) {
+            super(view);
+            mView = view;
+            mText = view.findViewById(R.id.memo_text);
+            mId = view.findViewById(R.id.memo_id);
         }
     }
 
-    public MemoAdapter(List<MemoManager.Memo> memos, Context context) {
+    public MemoAdapter(List<MemoManager.Memo> memos) {
         setData(memos);
-        mContext = context;
     }
 
     @Override
     public MemoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView text = new TextView(mContext);
-
-        TextView id = new TextView(mContext);
-        id.setVisibility(View.GONE);
-
-        LinearLayout layout = new LinearLayout(mContext);
-        layout.addView(text);
-        layout.addView(id);
-        return new MemoViewHolder(layout);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+        return new MemoViewHolder(view);
     }
 
     @Override
@@ -54,6 +45,11 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return R.layout.recycler_view_item;
     }
 
     public void setData(List<MemoManager.Memo> memos) {
