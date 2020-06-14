@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
-public class ForegroundViewManager implements MemoManager.MemoListener {
+public class ForegroundViewManager implements MemoListener {
     private Context mContext;
     private MemoManager mMemoMgr;
     private RecyclerView mRecyclerView;
@@ -42,7 +40,7 @@ public class ForegroundViewManager implements MemoManager.MemoListener {
         mSaveButton = activity.findViewById(R.id.notif_save);
         mSaveButton.setOnClickListener(v -> {
             CharSequence text = mNotifInput.getText();
-            if (!text.equals("")) {
+            if (!"".contentEquals(text)) {
                 mMemoMgr.createMemo(mNotifInput.getText().toString());
                 mNotifInput.setText("");
             }
@@ -53,18 +51,13 @@ public class ForegroundViewManager implements MemoManager.MemoListener {
     public void memoCreated(MemoManager.Memo memo) {
         Log.i(Constants.LOG_TAG, "FgViewMgr: adding memo " + memo.toString());
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void memoDeleted(int id) {
         Log.i(Constants.LOG_TAG, "FgViewMgr: removing memo " + id);
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    // Hack to force redraw when resuming activity
-    // Call after memoMgr.refresh()
-    public void refresh() {
-        Log.i(Constants.LOG_TAG, "Refreshing ForegroundViewManager");
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 }

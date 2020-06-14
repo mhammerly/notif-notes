@@ -14,7 +14,7 @@ public class NotifBroadcastReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Constants.REPLY_ACTION)) {
             CharSequence message = getReplyMessage(intent);
             Log.i(Constants.LOG_TAG, "Received REPLY_ACTION intent");
-            if (!message.equals("")) {
+            if (!"".contentEquals(message)) {
                 MemoManager.Memo memo = MemoManager.Static.createMemo(context, message);
                 NotifManager.Static.displayMemoNotif(context, memo);
             } else {

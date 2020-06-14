@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MemoManager {
+
+public class MemoManager implements MemoListener {
     private Context mContext;
     private SharedPreferences mPrefs;
-    private ArrayList<MemoListener> mListeners = new ArrayList<>();
+    private PrefsListener mPrefsListener = new PrefsListener();
 
     @Nullable
     private ArrayList<Memo> mMemoizedMemos = null;
@@ -46,6 +47,36 @@ public class MemoManager {
         }
     }
 
+    private static class PrefsListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+        private ArrayList<MemoListener> mListeners = new ArrayList<>();
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+            if (key.startsWith(Constants.PREFS_NOTIF_PREFIX)) {
+                String idStr = key.substring(Constants.PREFS_NOTIF_PREFIX.length());
+                try {
+                    int id = Integer.parseInt(idStr);
+                    if (prefs.contains(key)) {
+                        String text = prefs.getString(key, "");
+                        Memo memo = new Memo(text, id);
+                        for (MemoListener listener : mListeners) {
+                            listener.memoCreated(memo);
+                        }
+                    } else {
+                        for (MemoListener listener : mListeners) {
+                            listener.memoDeleted(id);
+                        }
+                    }
+                } catch (Exception e) {}
+            }
+        }
+
+        public void registerListener(MemoListener listener) {
+            mListeners.add(listener);
+        }
+
+    };
+
     public static class Memo {
         private CharSequence mText;
         private int mId;
@@ -68,36 +99,35 @@ public class MemoManager {
         }
     }
 
-    public interface MemoListener {
-        void memoCreated(Memo memo);
-        void memoDeleted(int id);
+    @Override
+    public void memoCreated(Memo memo) {
+        mMemoizedMemos.add(memo);
     }
+
+    @Override
+    public void memoDeleted(int id) {
+        mMemoizedMemos.removeIf(memo -> (memo.getId() == id));
+    }
+
 
     public MemoManager(Context context) {
         mContext = context;
         mPrefs = context.getSharedPreferences(Constants.PREFS_NAME, 0);
+        mPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
+
+        mPrefsListener.registerListener(this);
     }
 
     public void registerListener(MemoListener listener) {
-        mListeners.add(listener);
+        mPrefsListener.registerListener(listener);
     }
 
     public void createMemo(CharSequence text) {
-        Memo memo = Static.createMemo(mContext, text);
-        mMemoizedMemos.add(memo);
-
-        for (MemoListener listener : mListeners) {
-            listener.memoCreated(memo);
-        }
+        Static.createMemo(mContext, text);
     }
 
     public void deleteMemo(int id) {
         Static.deleteMemo(mContext, id);
-        mMemoizedMemos.removeIf(memo -> (memo.getId() == id));
-
-        for (MemoListener listener : mListeners) {
-            listener.memoDeleted(id);
-        }
     }
 
     public List<Memo> getMemos() {
@@ -120,11 +150,5 @@ public class MemoManager {
             Log.i(Constants.LOG_TAG, "Found " + mMemoizedMemos.size() + " memos in SharedPrefs");
         }
         return mMemoizedMemos;
-    }
-
-    public void refresh() {
-        Log.i(Constants.LOG_TAG, "Refreshing MemoManager");
-        mMemoizedMemos = null;
-        getMemos();
     }
 }

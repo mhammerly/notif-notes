@@ -18,13 +18,4 @@ public class MainActivity extends Activity {
         mNotifMgr.displayInputNotif();
         mFgViewMgr = new ForegroundViewManager(this, mMemoMgr);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Hack to redraw recyclerview
-        // Must call in this order
-        mMemoMgr.refresh();
-        mFgViewMgr.refresh();
-    }
 }

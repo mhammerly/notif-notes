@@ -17,7 +17,7 @@ import java.util.List;
 import static androidx.core.app.NotificationCompat.CATEGORY_REMINDER;
 import static androidx.core.app.NotificationCompat.CATEGORY_SYSTEM;
 
-public class NotifManager implements MemoManager.MemoListener {
+public class NotifManager implements MemoListener {
     private Context mContext;
     private NotificationManagerCompat mNotifMgr;
     private NotificationChannel mNotifChannel;
