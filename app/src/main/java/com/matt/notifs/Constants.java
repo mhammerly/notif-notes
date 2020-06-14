@@ -2,10 +2,11 @@ package com.matt.notifs;
 
 public class Constants {
 
-    public static final String REPLY_ACTION = "com.example.android.messagingservice.ACTION_MESSAGE_REPLY";
+    public static final String REPLY_ACTION = "com.matt.notifs.ACTION_MESSAGE_REPLY";
     public static final String DISMISS_ACTION = "com.matt.notifs.ACTION_NOTIF_DISMISS";
     public static final String KEY_NOTIF_ID = "notification_id";
     public static final String KEY_REPLY = "reply";
+    public static final String NOTIF_CHANNEL = "memo_notif";
 
     public static final Integer INPUT_NOTIF_ID = 1;
 

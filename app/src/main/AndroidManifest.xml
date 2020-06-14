@@ -19,9 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".MainActivity"
             android:label="Notifs"
-            android:screenOrientation="portrait">
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,7 +30,8 @@
         <receiver
             android:name=".NotifBroadcastReceiver">
             <intent-filter>
-                <action android:name="com.example.android.messagingservice.ACTION_MESSAGE_REPLY" />
+                <action android:name="com.matt.notifs.ACTION_MESSAGE_REPLY" />
+                <action android:name="com.matt.notifs.ACTION_NOTIF_DISMISS" />
             </intent-filter>
         </receiver>
     </application>

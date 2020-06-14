@@ -12,4 +12,23 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="hello world" />
+
+    <EditText
+        android:id="@+id/notif_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="enter a notification..."
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/notif_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="save notification" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notif_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
